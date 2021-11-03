@@ -6,6 +6,7 @@ created on 03.11.2021 by jchburmester
 """
 
 import numpy as np
+import matplotlib as plt
 
 # implementing sigmoid function & its derivative
 
