@@ -25,3 +25,10 @@ if np.abs(labels - output) >= 0.5:
     counter += 1
     
 print(counter)
+
+# next steps:
+# store counter for accuracy calculation later
+# compute error
+# pass error backwards
+# update weights
+# training
