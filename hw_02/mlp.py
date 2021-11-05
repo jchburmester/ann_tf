@@ -26,13 +26,13 @@ class MLP:
         for node in self.hidden_layer:
             # store outputs in a list
             hidden_layer_outputs.append(node.activate(self.inputs))
-        
-        # take outputs of hidden layer and activate final node with it
-        self.output = self.output_layer.activate(np.array(hidden_layer_outputs))
-        
+            
         # store input of final neuron to use in backward step
         self.final_input = hidden_layer_outputs
         
+        # take outputs of hidden layer and activate final node with it
+        self.output = self.output_layer.activate(np.array(hidden_layer_outputs))
+                
         return self.output
         
         
@@ -43,18 +43,26 @@ class MLP:
         # compute delta
         delta_output_neuron = - error * sigmoidprime(self.final_input)
         
-        # update weights of final node
-        self.output_layer.update(delta_output_neuron)
-        
-        # compute deltas and update nodes of hidden layer
+       # compute deltas for each node
         for idx, node in enumerate(self.hidden_layer):
+            # slice layer to ignore bias
             output_layer_weights_no_bias = self.output_layer.weights[1:]
-            delta = sigmoidprime(node.input) * delta_output_neuron * output_layer_weights_no_bias[idx]
+            # deltas
+            delta = sigmoidprime(node.drive) * delta_output_neuron * output_layer_weights_no_bias[idx]
+            # update node with delta
             node.update(delta)
         
-
-        
-
+        # update weights of final node
+        # has to be in this order since we need to compute deltas of hidden layer before weights are updated
+        self.output_layer.update(delta_output_neuron)
         
         return None
         
+    
+    
+    
+    
+    
+    
+    
+    

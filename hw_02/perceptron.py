@@ -7,7 +7,6 @@ created on 03.11.2021 by jchburmester
 
 import numpy as np
 from functions import sigmoid
-from functions import sigmoidprime
 
 # class for creating, activating, and updating perceptron
 class Perceptron:
@@ -18,17 +17,25 @@ class Perceptron:
         self.weights = np.random.normal(size=input_units+1)
         self.alpha = alpha
         self.act_func = act_func
-        self.input = 0
+        self.inputs = 0
+        self.drive = 0
     
     def activate(self, inputs):
         """Activate Perceptron"""
-        self.input = self.weights @ np.append(1, inputs)
-        node_output = self.act_func(self.input)
+        # add bias to inputs
+        self.inputs = np.insert(inputs, 0, 1)
+        
+        # dot product of weights and inputs
+        self.drive = self.weights @ self.inputs
+        
+        # activate node
+        node_output = self.act_func(self.drive)
         
         return node_output
     
     def update(self, delta):
         """Update the weights and the bias with error term delta"""
-           
+        gradients = delta * self.inputs
+        self.weights -= self.alpha * gradients
         
         return None
