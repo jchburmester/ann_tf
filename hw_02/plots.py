@@ -8,6 +8,8 @@ created on 03.11.2021 by jchburmester
 import numpy as np
 import matplotlib.pyplot as plt
 from functions import sigmoid, sigmoidprime
+from training import epoch_loss
+from training import epoch_accuracy
 
 # plotting sigmoids
 x = np.arange(-8.0, 8.0, 0.01)
@@ -28,4 +30,10 @@ ax2.set(xlabel='x', ylabel='sigmoidprime(x)',
        title='sigmoidprime')
 ax2.grid()
 fig2.savefig("sigmoid.png")
+plt.show()
+
+# plotting accuracy and loss after training MLP
+x = np.arange(1000)
+plt.plot(x, epoch_loss)
+plt.plot(x, epoch_accuracy)
 plt.show()
