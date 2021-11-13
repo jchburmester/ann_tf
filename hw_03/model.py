@@ -9,6 +9,7 @@ import numpy as np
 import tensorflow as tf
 
 class Dense(tf.keras.layers.Layer):
+    """ Dense layer class for the model """
 
     def __init__(self, units, activation):
         super(Dense, self).__init__()
@@ -27,6 +28,7 @@ class Dense(tf.keras.layers.Layer):
 
 
 class Model(tf.keras.Model):
+    """ Model class with 2 Dense layers with 256 units each and one output layer with 10 outputs """
 
     def __init__(self):
         super(Model, self).__init__()
