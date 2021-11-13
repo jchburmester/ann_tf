@@ -17,13 +17,27 @@ model = Model()
 loss = tf.keras.losses.CategoricalCrossentropy()
 optimizer = tf.keras.optimizers.SGD(learning_rate=0.01)
 
-test_loss, test_accuracy = model.test(ds_test, loss)
+# ----------------------------------------------------------
+
 accuracies = []
 losses = []
+train_losses = []
+train_accuracies = []
+
+# ----------------------------------------------------------
+
+test_loss, test_accuracy = model.test(ds_test, loss)
+
 accuracies.append(test_accuracy)
 losses.append(test_loss)
 
-print('\n','Initial loss:', test_loss.numpy(), 'Initial accuracy:', test_accuracy.numpy(),'\n')
+train_loss, train_accuracy = model.test(ds_train, loss)
+
+train_losses.append(train_loss)
+train_accuracies.append(train_accuracy)
+
+print('\n')
+print('Initial loss:', test_loss.numpy(), 'Initial accuracy:', test_accuracy.numpy(),'\n')
 
 for epoch in range(10):
     print(f'Epoch: {epoch}, accuracy of {accuracies[-1]}')
@@ -34,7 +48,7 @@ for epoch in range(10):
         loss_value = model.training(input, target, loss, optimizer)
         epoch_loss.append(loss_value)
 
-    epoch_loss.append(tf.reduce_mean(epoch_loss))
+    train_losses.append(tf.reduce_mean(epoch_loss))
 
     test_loss, test_accuracy = model.test(ds_test, loss)
     accuracies.append(test_accuracy)
