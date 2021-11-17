@@ -8,6 +8,10 @@ wine = pd.read_csv('https://archive.ics.uci.edu/ml/machine-learning-databases/wi
 # inspect the dataset
 print("The keys of the wine_quality dataset are:", *list(wine.columns), sep='\n')
 
+# get median of wine quality column
+global median
+median = np.median(wine['quality'])
+
 # split dataset
 training_data = wine.sample(frac=0.7, random_state=1)
 val_data = wine.sample(frac=0.15, random_state=1)
@@ -37,4 +41,6 @@ tf_val_labels = tf.data.Dataset.from_tensor_slices(tensors[3])
 tf_test = tf.data.Dataset.from_tensor_slices(tensors[4])
 tf_test_labels = tf.data.Dataset.from_tensor_slices(tensors[5])
 
-print(len(tf_train))
+# make datasets global
+global ds_list
+ds_list = [tf_train, tf_train_labels, tf_val, tf_val_labels, tf_test, tf_test_labels]
