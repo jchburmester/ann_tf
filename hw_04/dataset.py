@@ -8,14 +8,10 @@ wine = pd.read_csv('https://archive.ics.uci.edu/ml/machine-learning-databases/wi
 # inspect the dataset
 print("The keys of the wine_quality dataset are:", *list(wine.columns), sep='\n')
 
-# convert to tensorflow dataset
-wine_slices = tf.data.Dataset.from_tensor_slices(wine)
-
-"""
 # split dataset
-training_data = data.sample(frac=0.7, random_state=1)
-val_data = data.sample(frac=0.15, random_state=1)
-test_data = data.sample(frac=0.15, random_state=1)
+training_data = wine.sample(frac=0.7, random_state=1)
+val_data = wine.sample(frac=0.15, random_state=1)
+test_data = wine.sample(frac=0.15, random_state=1)
 
 # separate labels from input
 input_train = training_data.drop(columns='quality')
@@ -32,5 +28,13 @@ pd_dataframes = [input_train, labels_train, input_val, labels_val, input_test, l
 tensors = [tf.convert_to_tensor(d) for d in pd_dataframes]
 
 # convert to tensorflow datasets
-ds = tf.data.Dataset.from_tensor_slices(tensors)
-"""
+tf_train = tf.data.Dataset.from_tensor_slices(tensors[0])
+tf_train_labels = tf.data.Dataset.from_tensor_slices(tensors[1])
+
+tf_val = tf.data.Dataset.from_tensor_slices(tensors[2])
+tf_val_labels = tf.data.Dataset.from_tensor_slices(tensors[3])
+
+tf_test = tf.data.Dataset.from_tensor_slices(tensors[4])
+tf_test_labels = tf.data.Dataset.from_tensor_slices(tensors[5])
+
+print(len(tf_train))
