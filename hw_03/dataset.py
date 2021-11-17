@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Python script for pre-processing the pipeline
+Python script for pre-processing the data
 created on 03.11.2021
 
 """
+<<<<<<< Updated upstream
 import tensorflow as tf
 import tensorflow_datasets as tfds
 
@@ -36,3 +37,14 @@ def preprocessing(data):
 
 ds_train = ds_train.apply(preprocessing)
 ds_test = ds_test.apply(preprocessing)
+=======
+
+import tensorflow as tf
+import tensorflow_datasets as tfds
+import numpy as np
+
+# Construct a tf.data.Dataset
+ds, ds_info = tfds.load('genomics_ood', shuffle_files=True, as_supervised=True, with_info=True)
+
+#print(ds_info)
+>>>>>>> Stashed changes
