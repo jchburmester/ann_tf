@@ -1,4 +1,5 @@
 from functions import make_binary
+from dataset import data
 
 # data pipeline
 def doItForTheWine(wines):

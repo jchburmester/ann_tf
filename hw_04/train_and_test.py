@@ -1,10 +1,17 @@
 import tensorflow as tf
-from dataset import ds_list
+from dataset import data
 from model import Wine_Tasting
+from pipeline import doItForTheWine
 
 # unravel data
-ds_train = ds_list[0]
+ds_train = data[0]
+ds_val = data[1]
+ds_test = data[2]
 
+# put data through pre-processing pipeline
+ds_train = doItForTheWine(ds_train)
+ds_val = doItForTheWine(ds_val)
+ds_test = doItForTheWine(ds_test)
 
 # training
 # 10 epochs
@@ -20,7 +27,7 @@ model = Wine_Tasting()
 
 """ Initialising the loss and optimiser function """
 loss = tf.keras.losses.BinaryCrossentropy()
-optimizer = tf.keras.optimizers.SGD(learning_rate=0.01)
+optimizer = tf.keras.optimizers.SGD(learning_rate=0.1)
 
 # some empty lists
 accuracies = []
