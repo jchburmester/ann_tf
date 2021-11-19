@@ -1,6 +1,6 @@
-import matplotlib as plt
+import matplotlib.pyplot as plt
 import numpy as np
-from main import accuracies, losses, train_losses
+from train_and_test import accuracies, losses, train_losses
 
 ''' Visualize accuracy and loss for training and test data '''
 

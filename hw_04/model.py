@@ -40,8 +40,7 @@ class Wine_Tasting(tf.keras.Model):
             pred = self.call(input)
             loss_value = loss(target, pred)
 
-            # np.round(,0) instead of np.argmax?
-            sample_accuracy = np.argmax(pred, axis=1) == np.argmax(target, axis=1)
+            sample_accuracy = np.round(pred, 0) == np.round(target, 0)
             sample_accuracy = np.mean(sample_accuracy)
 
             test_accuracy.append(np.mean(sample_accuracy))

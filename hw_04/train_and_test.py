@@ -19,7 +19,7 @@ ds_test = doItForTheWine(ds_test)
 # loss: binary cross entropy
 # optimiser: SGD
 
-def training_loop(my_optimizer=tf.keras.optimizer.SGD):
+def training_loop(my_optimizer):
 
     # clearing backend
     tf.keras.backend.clear_session()
@@ -32,6 +32,10 @@ def training_loop(my_optimizer=tf.keras.optimizer.SGD):
     optimizer = my_optimizer(learning_rate=0.1)
 
     # some empty lists
+    global accuracies
+    global losses
+    global train_losses
+
     accuracies = []
     losses = []
     train_losses = []
@@ -64,3 +68,6 @@ def training_loop(my_optimizer=tf.keras.optimizer.SGD):
         test_loss, test_accuracy = model.test(ds_test, loss)
         accuracies.append(test_accuracy)
         losses.append(test_loss)
+
+training_loop(my_optimizer=tf.keras.optimizers.SGD)
+#training_loop(my_optimizer=tf.keras.optimizers.Adam)
