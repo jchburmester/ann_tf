@@ -2,7 +2,7 @@ from dataset import median
 
 # helper function
 def make_binary(target):
-    return True if target > median else False
+    return True if target >= median else False
 
 # data pipeline
 def doItForTheWine(wines):

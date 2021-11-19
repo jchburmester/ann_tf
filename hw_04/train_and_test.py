@@ -53,8 +53,8 @@ def training_loop(my_optimizer):
 
     print('Initial loss:', test_loss.numpy(), 'Initial accuracy:', test_accuracy.numpy(),'\n')
 
-    """ Train the model for 10 epochs """
-    for epoch in range(10):
+    """ Train the model for n epochs """
+    for epoch in range(50):
         print(f'Epoch: {epoch}, accuracy of {accuracies[-1]}')
 
         epoch_loss = []
@@ -69,5 +69,5 @@ def training_loop(my_optimizer):
         accuracies.append(test_accuracy)
         losses.append(test_loss)
 
-training_loop(my_optimizer=tf.keras.optimizers.SGD)
-#training_loop(my_optimizer=tf.keras.optimizers.Adam)
+#training_loop(my_optimizer=tf.keras.optimizers.SGD)
+training_loop(my_optimizer=tf.keras.optimizers.Adam)
