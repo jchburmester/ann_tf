@@ -1,11 +1,3 @@
-###To-Do:
-- Set hyperparameters to increase performance (alter the number of residual blocks / the number of dense blocks)
-- growth_rate should be the only param for DenseNet
-- Understand and implement growth rate (--> DenseNet)
-- Short explanation of findings
-- upload to GitHub
-- table for findings
-
 # Homework 06
 This week, our task was to classify images from the Cifar10 dataset.
 To do so, we created a ResNet and a DenseNet network and compared them to our Simple CNN model from last week.
