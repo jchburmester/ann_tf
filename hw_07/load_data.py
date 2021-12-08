@@ -13,8 +13,6 @@ def integration_task(seq_len, num_samples):
     num_samples : int
         number of samples
     """
-    if(seq_len < 1 or num_samples < 1):
-        print("Parameters must be greater than 0!")
     
     for i in range(num_samples):
         # random noise signal of size seq_length
