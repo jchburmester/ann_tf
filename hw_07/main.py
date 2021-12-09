@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from load_data import create_and_split_signal_dataset
 from data_pipeline import prepare_signal_data
+from lstm import MyLSTM
 
 
 train_ds, val_ds, test_ds = create_and_split_signal_dataset()

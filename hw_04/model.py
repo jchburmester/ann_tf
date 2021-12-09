@@ -7,8 +7,8 @@ class Wine_Tasting(tf.keras.Model):
     def __init__(self):
         """ initialising the model """
         super(Wine_Tasting, self).__init__()
-        self.dense1 = tf.keras.layers.Dense(4, activation=tf.nn.elu)
-        self.dense2 = tf.keras.layers.Dense(8, activation=tf.nn.elu)
+        self.dense1 = tf.keras.layers.Dense(4, activation=tf.nn.leaky_relu)
+        self.dense2 = tf.keras.layers.Dense(8, activation=tf.nn.leaky_relu)
         #self.dense3 = tf.keras.layers.Dense(256, activation=tf.nn.sigmoid)
         self.ciao = tf.keras.layers.Dense(1, activation=tf.nn.sigmoid)
 
