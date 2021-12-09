@@ -7,10 +7,18 @@ class LSTM_cell:
         
         # weight init (kernel init)
         self.units = units
-        self.forget_gate = tf.keras.layers.Dense(units, activation='sigmoid', bias_initializer=tf.keras.initializers.ones())
-        self.input_gate = tf.keras.layers.Dense(units, activation='sigmoid')
-        self.cell_state_candidates = tf.keras.layers.Dense(units, activation='tanh')
-        self.output_gate = tf.keras.layers.Dense(units, activation='sigmoid')
+        self.forget_gate = tf.keras.layers.Dense(units, activation='sigmoid',
+                                                kernel_initializer=tf.keras.initializers.RandomNormal(stddev=0.01),
+                                                bias_initializer=tf.keras.initializers.ones())
+        self.input_gate = tf.keras.layers.Dense(units, activation='sigmoid',
+                                                kernel_initializer=tf.keras.initializers.RandomNormal(stddev=0.01),
+                                                bias_initializer=tf.keras.initializers.ones())
+        self.cell_state_candidates = tf.keras.layers.Dense(units, activation='tanh',
+                                                kernel_initializer=tf.keras.initializers.RandomNormal(stddev=0.01),
+                                                bias_initializer=tf.keras.initializers.ones())
+        self.output_gate = tf.keras.layers.Dense(units, activation='sigmoid',
+                                                kernel_initializer=tf.keras.initializers.RandomNormal(stddev=0.01),
+                                                bias_initializer=tf.keras.initializers.ones())
 
     def call(self, x, states):
         
@@ -81,3 +89,30 @@ class MyLSTM(tf.keras.Model):
         outputs = LSTM.call(read_in)
 
         return self.out(outputs[-1])
+
+    def train_step(self, signal, target, loss_function, optimizer):
+        # use context manager
+        with tf.GradientTape() as tape:
+            prediction = self.call(signal)
+            loss = loss_function(target, prediction)
+            gradients = tape.gradient(loss, self.trainable_variables)
+            optimizer.apply_gradients(zip(gradients, self.trainable_variables))
+        return loss
+
+    def test(self, test_data, loss_function):
+        # test over complete test data
+        test_accuracy_aggregator = []
+        test_loss_aggregator = []
+
+        for (signal, target) in test_data:
+            prediction = self.call(signal)
+            sample_test_loss = loss_function(target, prediction)
+            sample_test_accuracy =  np.argmax(target, axis=1) == np.argmax(prediction, axis=1)
+            sample_test_accuracy = np.mean(sample_test_accuracy)
+            test_loss_aggregator.append(sample_test_loss.numpy())
+            test_accuracy_aggregator.append(np.mean(sample_test_accuracy))
+
+        test_loss = tf.reduce_mean(test_loss_aggregator)
+        test_accuracy = tf.reduce_mean(test_accuracy_aggregator)
+
+        return test_loss, test_accuracy
