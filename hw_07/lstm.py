@@ -10,15 +10,9 @@ class LSTM_cell:
         self.forget_gate = tf.keras.layers.Dense(units, activation='sigmoid',
                                                 kernel_initializer=tf.keras.initializers.RandomNormal(stddev=0.01),
                                                 bias_initializer=tf.keras.initializers.ones())
-        self.input_gate = tf.keras.layers.Dense(units, activation='sigmoid',
-                                                kernel_initializer=tf.keras.initializers.RandomNormal(stddev=0.01),
-                                                bias_initializer=tf.keras.initializers.ones())
-        self.cell_state_candidates = tf.keras.layers.Dense(units, activation='tanh',
-                                                kernel_initializer=tf.keras.initializers.RandomNormal(stddev=0.01),
-                                                bias_initializer=tf.keras.initializers.ones())
-        self.output_gate = tf.keras.layers.Dense(units, activation='sigmoid',
-                                                kernel_initializer=tf.keras.initializers.RandomNormal(stddev=0.01),
-                                                bias_initializer=tf.keras.initializers.ones())
+        self.input_gate = tf.keras.layers.Dense(units, activation='sigmoid')
+        self.cell_state_candidates = tf.keras.layers.Dense(units, activation='tanh')
+        self.output_gate = tf.keras.layers.Dense(units, activation='sigmoid')
 
     def call(self, x, states):
         
