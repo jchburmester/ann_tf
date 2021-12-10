@@ -14,7 +14,7 @@ def integration_task(seq_len, num_samples):
         number of samples
     """
     
-    for i in range(num_samples):
+    for _ in range(num_samples):
         # random noise signal of size seq_length
         signal = np.random.normal(size=seq_len)
         # target 1: integral of noise signal is larger/equal than 1
@@ -87,7 +87,7 @@ def create_and_split_signal_dataset():
         splitted training, validation and test tf datasets
     """
     # create tf dataset
-    signal_ds = tf.data.Dataset.from_generator(my_integration_task, output_signature=(tf.TensorSpec(shape=(5,1),
+    signal_ds = tf.data.Dataset.from_generator(my_integration_task, output_signature=(tf.TensorSpec(shape=(10,1),
     dtype=tf.float32), tf.TensorSpec(shape=(1,),dtype=tf.float32)))
 
     # get dataset size

@@ -14,13 +14,15 @@ class LSTM_cell:
         self.cell_state_candidates = tf.keras.layers.Dense(units, activation='tanh')
         self.output_gate = tf.keras.layers.Dense(units, activation='sigmoid')
 
+    def get_units(self):
+        return self.units
+
     def call(self, x, states):
         
-        ht_old = states[0]
-        ct_old = states[1]
+        ht_old, ct_old = states
 
         # concat hidden state and input
-        concat_input = tf.concat(x, ht_old, axis=0)
+        concat_input = tf.concat([x, ht_old], axis=0)
 
         # compute forget gate
         forget_output = self.forget_gate(concat_input)
@@ -29,13 +31,13 @@ class LSTM_cell:
         input = self.input_gate(concat_input)
 
         # compute cell state candidates
-        tanh = self.cell_state_candidates(concat_input)
+        candidate = self.cell_state_candidates(concat_input)
 
         # compute output gate
         output = self.output_gate(concat_input)
 
-        ct_new = np.dot(ct_old, forget_output) + np.dot(input, tanh)
-        ht_new = np.dot(tf.keras.activations.tanh(ct_new), output)
+        ct_new = np.dot(ct_old, forget_output, axis=1) + np.dot(input, candidate, axis=1)
+        ht_new = np.dot(tf.keras.activations.tanh(ct_new), output, axis=1)
 
         return (ht_new, ct_new)
 
@@ -58,11 +60,15 @@ class LSTM_layer:
         return hidden_states
         
     def zero_states(self, batch_size):
-        self.states = tf.zeros((batch_size, 2))
+
+        ht_init = tf.zeros((batch_size, self.cell.get_units()))
+        ct_init = tf.zeros((batch_size, self.cell.get_units()))
+
+        return (ht_init, ct_init)
 
 
 class MyLSTM(tf.keras.Model):
-    def __init__(self):
+    def __init__(self, batch_size):
         super(MyLSTM, self).__init__()
 
         # read_in layer(s)
@@ -74,20 +80,21 @@ class MyLSTM(tf.keras.Model):
         # final output layer to transform last output into prediction
         self.out = tf.keras.layers.Dense(1, activation='sigmoid')
 
+        self.init_states = self.LSTM.zero_states(batch_size)
+
     @tf.function
     def call(self, x):
         # set zero states since for every batch we are calling the model again
-        LSTM = self.LSTM.zero_states()
+        x = self.embedding(x)
+        outputs = self.LSTM.call(x, self.init_states)
+        last_out = self.out(outputs[-1])
 
-        read_in = self.embedding(x)
-        outputs = LSTM.call(read_in)
+        return last_out
 
-        return self.out(outputs[-1])
-
-    def train_step(self, signal, target, loss_function, optimizer):
+    def train_step(self, input, target, loss_function, optimizer):
         # use context manager
         with tf.GradientTape() as tape:
-            prediction = self.call(signal)
+            prediction = self.call(input)
             loss = loss_function(target, prediction)
             gradients = tape.gradient(loss, self.trainable_variables)
             optimizer.apply_gradients(zip(gradients, self.trainable_variables))
