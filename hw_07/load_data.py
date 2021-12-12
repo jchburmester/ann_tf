@@ -87,7 +87,7 @@ def create_and_split_signal_dataset():
         splitted training, validation and test tf datasets
     """
     # create tf dataset
-    signal_ds = tf.data.Dataset.from_generator(my_integration_task, output_signature=(tf.TensorSpec(shape=(10,1),
+    signal_ds = tf.data.Dataset.from_generator(my_integration_task, output_signature=(tf.TensorSpec(shape=(5,1),
     dtype=tf.float32), tf.TensorSpec(shape=(1,),dtype=tf.float32)))
 
     # get dataset size

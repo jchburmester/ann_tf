@@ -22,7 +22,7 @@ class LSTM_cell:
         ht_old, ct_old = states
 
         # concat hidden state and input
-        concat_input = tf.concat([x, ht_old], axis=0)
+        concat_input = tf.concat([x, ht_old], axis=-1)
 
         # compute forget gate
         forget_output = self.forget_gate(concat_input)
